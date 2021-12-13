@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/logo.png">
+    <title>Shortify - URL Shortener</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- header section starts  -->
+<header class="header">
+    <a href="#" class="logo"> Shortify </a>
+    <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+    </div>
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#services">Features</a>
+        <a href="#extension">Extension</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+<!-- header section ends -->
+
+<!-- home section starts  -->
+<section class="home" id="home">
+    <div class="image">
+        <img src="images/—Pngtree—share illustration concept modern flat_4925287.png" alt="">
+    </div>
+    <div class="content">
+        <h3>No More Confusing Links</h3>
+        <p>Generate <b>custom</b> short links with names that everyone can understand. The <b>fastest</b> shortener you can have.<br> Also available as a <b>chrome extension</b></p>
+        <a href="#extension" class="btn">Explore now</a>
+    </div>
+</section>
+<!-- home section ends -->
+
+<!-- filter form section starts  -->
+<section class="form-container">
+    <form id="urlForm">
+        <div class="inputBox">
+            <span>Long URL</span>
+            <input name="url" type="text" placeholder="Paste the Long URL" required>
+        </div>
+        <div class="inputBox">
+            <span>SLUG</span>
+            <input name="slug" type="text" placeholder="What's your Slug?" required>
+        </div>
+        <div class="inputBox">
+            <span id="resultLabel">Shortened URL</span>
+            <input type="text" value="Ex: xsrt.ml/yourSlug" disabled id='result' class="copy"> 
+        </div>
+        <input type="submit" value="Shortify!" class="inpbtn" id='btt'>
+    </form>
+</section>
+<!-- filter form section ends -->
+
+<!-- services section starts  -->
+<section class="services" id="services">
+    <h1 class="heading"><span>Features</span> </h1>
+    <div class="box-container">
+        <div class="box">
+            <span>01</span>
+            <i class="fas fa-stop"></i>
+            <h3>No Limits</h3>
+            <p>No limit to how many short links you can have. Also, completely free!</p>
+        </div>
+        <div class="box">
+            <span>02</span>
+            <i class="fas fa-pencil-ruler"></i>
+            <h3>Customised Slug</h3>
+            <p>Put any slug according to your preference! No extra charge!</p>
+        </div>
+        <div class="box">
+            <span>03</span>
+            <i class="fas fa-bolt"></i>
+            <h3>Extension Available</h3>
+            <p>Chrome/Brave extension available for use. Fastest Link Shortener!</p>
+        </div>
+    </div>
+
+</section>
+<!-- services section ends -->
+
+<!-- extension section starts  -->
+<section class="home" id="extension">
+
+    <div class="content">
+        <h3>Shortify! Now at your fingertips.</h3>
+        <p>Too <b>busy</b> to <b>visit</b> a website, to <b>copy</b> a link or to <b>shorten</b> it yourself? <br/>No worries we have got you <b>covered!</b></p>
+        <a href="https://github.com/Kingshuk-Deb/Shortify_Extn" class="btn">Download now</a>
+    </div>    
+    <div class="image">
+        <img src="images/extn.png" alt="">
+    </div>    
+</section>
+<!-- extension section ends -->
+
+<!-- contact section starts  -->
+<section class="contact" id="contact">
+    <h1 class="heading"> <span>contact</span> us </h1>
+    <form action="https://formsubmit.co/kingshukdeb@outlook.com" method="POST">
+        <div class="inputBox">
+            <input type="text" placeholder="name" name="name" required>
+            <input type="email" placeholder="email" name="email" required>
+        </div>
+        <div class="inputBox">
+            <input type="text" placeholder="subject" name="_subject" class='subj' required>
+            <input type="hidden" name="_next" value="http://xsrt.ml/">
+        </div>
+        <textarea name="message" placeholder="Your Message" id="" cols="30" rows="10"></textarea>        
+        <input type="submit" value="send message" class="btn">
+    </form>
+</section>
+<!-- contact section ends -->
+
+<!-- footer section starts  -->
+<section class="footer">
+    <div class="foo">
+        <div class="credit"> Feel free to contribute on</div><div> <button class="btn"><a href="https://github.com/Kingshuk-Deb/Shortify">Github</a></button> </div>
+    </div>
+</section>
+<!-- footer section ends  -->
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+<script>
+    const formEl = document.getElementById("urlForm");
+    let result = document.getElementById('result');
+    let resultL = document.getElementById('resultLabel');
+    let btn = document.getElementById('btt');
+    formEl.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        btn.value = "Loading...";
+        const formData = new FormData(formEl);
+        const formDataSerialized = Object.fromEntries(formData);
+        const jsonObject = {
+            ...formDataSerialized, sendToSelf: formDataSerialized.sendToSelf ? true : false,
+        };
+        try {
+            const response = await fetch('/shortit', {
+                method: "POST",
+                body: JSON.stringify(jsonObject),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const json = await response.json();
+            console.log(json);
+            if(json.error) {
+                resultL.textContent = "ERROR!!";
+                result.value = json.error;
+                btn.value = "Try Again!";
+            } 
+            else {
+                result.value = json.shortURL;
+                btn.value = "Try Again!";
+            }
+        }   catch (e) {
+            console.error(e);
+            console.log("there as an error");
+        }
+    });
+</script>
+</body>
+</html>
