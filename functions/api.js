@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // Code to establish mongoose connection
-const uri = 'mongodb+srv://<username>:<password>@cluster0.caftg.mongodb.net/<dbname>?retryWrites=true&w=majority';
+const uri = process.env.MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
 const connection = mongoose.connection;
 connection.once("open", () => { console.log("MongoDB database connection established successfully."); });
