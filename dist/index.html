@@ -113,7 +113,7 @@
             <input type="hidden" name="_next" value="http://xsrt.ml/">
         </div>
         <textarea name="message" placeholder="Your Message" id="" cols="30" rows="10"></textarea>        
-        <input type="submit" value="send message" class="btn">
+        <input type="submit" value="Send Message" class="btn">
     </form>
 </section>
 <!-- contact section ends -->
@@ -159,7 +159,8 @@
             } 
             else {
                 result.value = json.shortURL;
-                btn.value = "Success!";
+                btn.value = "Copied to CLipboard!";
+                navigator.clipboard.writeText(json.shortURL);
                 setTimeout(() => {
                     btn.value = "Try New URL!";
                 }, 5000);
