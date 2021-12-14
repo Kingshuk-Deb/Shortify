@@ -44,7 +44,7 @@
     <form id="urlForm">
         <div class="inputBox">
             <span>Long URL</span>
-            <input name="url" type="text" placeholder="Paste the Long URL" required>
+            <input name="url" type="text" placeholder="URL should have http:// or https://" required>
         </div>
         <div class="inputBox">
             <span>SLUG</span>
@@ -159,7 +159,10 @@
             } 
             else {
                 result.value = json.shortURL;
-                btn.value = "Try Again!";
+                btn.value = "Success!";
+                setTimeout(() => {
+                    btn.value = "Try New URL!";
+                }, 5000);
             }
         }   catch (e) {
             console.error(e);
